@@ -267,8 +267,14 @@ function registerEvents(emitter) {
           var self = this
           deploy = function(ctx, cb) {
             striderMessage("Deploying to Heroku ...")
+            // Deploy to testing first
             deployHeroku(self.workingDir,
-              data.deploy_config.app, data.deploy_config.privkey, cb)
+              data.deploy_config.app+"-test", data.deploy_config.privkey, function(err) {
+                if (err) return cb(err);
+                // Deploy to prod after
+                deployHeroku(self.workingDir,
+                  data.deploy_config.app, data.deploy_config.privkey, cb)
+              });
           }
         }
 
