@@ -132,14 +132,15 @@ function registerEvents(emitter) {
 
     // Deploy to Heroku
     function deployHeroku(cwd, app, key, cb) {
-      var cmd = 'git remote add heroku git@heroku.com:' + app + '.git'
+      var remote = app+"-heroku";
+      var cmd = 'git remote add '+remote+' git@heroku.com:' + app + '.git'
       gitane.run(cwd, key, cmd, function(err, stdout, stderr) {
         if (err) return cb(1, null)
         stdoutBuffer += stdout
         stderrBuffer += stderr
         stdmergedBuffer += stdout + stderr
         updateStatus("queue.job_update", {stdout:stdout, stderr:stderr, stdmerged:stdout+stderr})
-        cmd = 'git push heroku --force master'
+        cmd = 'git push '+remote+' --force master'
         gitane.run(cwd, key, cmd, function(err, stdout, stderr) {
           if (err) return cb(1, null)
           stdoutBuffer += stdout
