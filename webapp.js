@@ -270,7 +270,7 @@ function registerEvents(emitter) {
             striderMessage("Deploying to Heroku ...")
             striderMessage("Deploying test environment ...")
             deployHeroku(self.workingDir,
-              data.deploy_config.app+"-test", data.deploy_config.privkey, function(err) {
+              data.deploy_config.app.replace("-prod","-test"), data.deploy_config.privkey, function(err) {
                 if (err) return cb(err);
                 striderMessage("Deploying production environment ...")
                 deployHeroku(self.workingDir,
